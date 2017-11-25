@@ -375,81 +375,43 @@ Athena](http://docs.aws.amazon.com/athena/latest/ug/getting-started.html#step-2-
 to go across the entire data volume. This can be done using the following query:
 ```
 CREATE EXTERNAL TABLE IF NOT EXISTS brfsdata(
-
-ID STRING,
-
-HIW STRING,
-
-SUSA_NAME STRING,
-
-MATCH_NAME STRING,
-
-CHSI_NAME STRING,
-
-NSUM STRING,
-
-MEAN STRING,
-
-FLAG STRING,
-
-IND STRING,
-
-UP_CI STRING,
-
-LOW_CI STRING,
-
-SEMEAN STRING,
-
-AGE_ADJ STRING,
-
-DATASRC STRING,
-
-FIPS STRING,
-
-FIPNAME STRING,
-
-HRR STRING,
-
-DATA_YR STRING,
-
-UNIT STRING,
-
-AGEGRP STRING,
-
-GENDER STRING,
-
-RACE STRING,
-
-EHN STRING,
-
-EDU STRING,
-
-FAMINC STRING,
-
-DISAB STRING,
-
-METRO STRING,
-
-SEXUAL STRING,
-
-FAMSTRC STRING,
-
-MARITAL STRING,
-
-POP_SPC STRING,
-
-POP_POLICY STRING
-
+    ID STRING,
+    HIW STRING,
+    SUSA_NAME STRING,
+    MATCH_NAME STRING,
+    CHSI_NAME STRING,
+    NSUM STRING,
+    MEAN STRING,
+    FLAG STRING,
+    IND STRING,
+    UP_CI STRING,
+    LOW_CI STRING,
+    SEMEAN STRING,
+    AGE_ADJ STRING,
+    DATASRC STRING,
+    FIPS STRING,
+    FIPNAME STRING,
+    HRR STRING,
+    DATA_YR STRING,
+    UNIT STRING,
+    AGEGRP STRING,
+    GENDER STRING,
+    RACE STRING,
+    EHN STRING,
+    EDU STRING,
+    FAMINC STRING,
+    DISAB STRING,
+    METRO STRING,
+    SEXUAL STRING,
+    FAMSTRC STRING,
+    MARITAL STRING,
+    POP_SPC STRING,
+    POP_POLICY STRING
 )
-
 ROW FORMAT DELIMITED
-
 FIELDS TERMINATED BY ','
-
 ESCAPED BY '\\\\'
-
 LINES TERMINATED BY '\\n'
-
 LOCATION "s3://\<YourBucket/YourPrefix\>"
 ```
 Replace *YourBucket* and *YourPrefix* with your corresponding values.
@@ -488,33 +450,27 @@ filter out unwanted data and fix the column headers:
 
 **Query 1:**
 
-SELECT ID, up_ci AS source, semean AS state, datasrc
-
+```SELECT ID, up_ci AS source, semean AS state, datasrc
 AS year, fips AS unit, fipname AS age,mean, current_date AS dt, current_time AS
 tm FROM brfsdata
-
 WHERE ID != '' AND hrr IS NULL AND semean NOT LIKE '%29193%'
-
+```
 **Query 2:**
-
+```
 SELECT ID, up_ci AS source, semean AS state, datasrc
-
 AS year, fips AS unit, fipname AS age,mean, current_date AS dt, current_time AS
 tm
-
 FROM brfsdata WHERE ID != '' AND hrr IS NOT NULL AND up_ci LIKE '%BRFSS%'and
 semean NOT LIKE '"%' AND semean NOT LIKE '%29193%'
-
+```
 **Query 3:**
-
+```
 SELECT ID, low_ci AS source, age_adj AS state, fips
-
 AS year, fipname AS unit, hrr AS age,mean, current_date AS dt, current_time AS
 tm
-
 FROM brfsdata WHERE ID != '' AND hrr IS NOT NULL AND up_ci NOT LIKE '%BRFSS%'
 AND age_adj NOT LIKE '"%' AND semean NOT LIKE '%29193%' AND low_ci LIKE 'BRFSS'
-
+```
 You can save these queries in Athena so that you can get to the query results
 easily every time they are executed. The following screenshot is an example of
 the results when query 1 is executed four times.
@@ -553,31 +509,18 @@ below. Replace YourReportingBucket and YourReportingPrefix with your
 corresponding values.
 ```
 CREATE EXTERNAL TABLE IF NOT EXISTS BRFSS_REPORTING(
-
-ID varchar(100),
-
-source varchar(100),
-
-state varchar(100),
-
-year int,
-
-unit varchar(10),
-
-age varchar(10),
-
-mean float
-
+    ID varchar(100),
+    source varchar(100),
+    state varchar(100),
+    year int,
+    unit varchar(10),
+    age varchar(10),
+    mean float
 )
-
 ROW FORMAT DELIMITED
-
 FIELDS TERMINATED BY ','
-
 ESCAPED BY '\\\\'
-
 LINES TERMINATED BY '\\n'
-
 LOCATION "s3://\<YourReportingBucket/YourReportingPrefix\>"
 ```
 This table can now act as a source for a dashboard on Amazon QuickSight, which
