@@ -373,7 +373,7 @@ performance.
 To look at the entire dataset, [create a table in
 Athena](http://docs.aws.amazon.com/athena/latest/ug/getting-started.html#step-2-create-a-table)
 to go across the entire data volume. This can be done using the following query:
-
+```
 CREATE EXTERNAL TABLE IF NOT EXISTS brfsdata(
 
 ID STRING,
@@ -451,7 +451,7 @@ ESCAPED BY '\\\\'
 LINES TERMINATED BY '\\n'
 
 LOCATION "s3://\<YourBucket/YourPrefix\>"
-
+```
 Replace *YourBucket* and *YourPrefix* with your corresponding values.
 
 In this case, there are a total of \~1.4 million records, which you get by
