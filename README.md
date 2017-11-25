@@ -551,7 +551,7 @@ Data prefix, create a new table in Athena that is used specifically for BI
 reporting. This can be done using a create table statement similar to the one
 below. Replace YourReportingBucket and YourReportingPrefix with your
 corresponding values.
-
+```
 CREATE EXTERNAL TABLE IF NOT EXISTS BRFSS_REPORTING(
 
 ID varchar(100),
@@ -579,7 +579,7 @@ ESCAPED BY '\\\\'
 LINES TERMINATED BY '\\n'
 
 LOCATION "s3://\<YourReportingBucket/YourReportingPrefix\>"
-
+```
 This table can now act as a source for a dashboard on Amazon QuickSight, which
 is a straightforward process to enable. When you choose a new data source,
 Athena shows up as an option and Amazon QuickSight automatically detects the
