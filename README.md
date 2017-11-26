@@ -4,7 +4,11 @@
 Lab Manual
 
 re:Invent 2017
+---
 
+© 2017 Amazon Web Services, Inc. and its affiliates. All rights reserved. This work may not be  reproduced or redistributed, in whole or in part, without prior written permission from Amazon Web Services, Inc. Commercial copying, lending, or selling is prohibited.
+
+---
 Overview
 --------
 
@@ -46,7 +50,7 @@ only in the regions [listed in the
 documentation](http://docs.aws.amazon.com/redshift/latest/dg/c-spectrum-data-files.html)
 for Amazon Redshift Spectrum.
 
-1.  Create a [key
+4.  Create a [key
     pair](https://us-west-2.console.aws.amazon.com/ec2/v2/home?region=us-west-2#KeyPairs:sort=keyName)
     in the us-west-2 region.
 
@@ -56,7 +60,7 @@ for Amazon Redshift Spectrum.
 
 -   When prompted, save the keypair to disk
 
-1.  If necessary, [request a service limit
+5.  If necessary, [request a service limit
     increase](https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&limitType=service-code-)
     for the Amazon EC2 **t2.micro** instance type. You might need to do this if
     you already have an existing deployment that uses this instance type, and
@@ -64,7 +68,7 @@ for Amazon Redshift Spectrum.
     limit](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-resource-limits.html)
     with this reference deployment.
 
-2.  If necessary, [request a service limit
+6.  If necessary, [request a service limit
     increase](https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&limitType=service-code-)
     for AWS CloudFormation stacks. The Quick Start will create up to eleven (11)
     stacks. You may need to request a service limit increase if you already have
@@ -179,7 +183,7 @@ for Amazon Redshift Spectrum.
 | Quick Start S3 Key Prefix                  | datalake/47lining         | [S3 key prefix](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html) used to simulate a folder for your copy of Quick Start assets, if you decide to customize or extend the Quick Start for your own use. This prefix can include numbers, lowercase letters, uppercase letters, hyphens, and forward slashes.                                                      |
 | (QSS3KeyPrefix)                            | /latest/                  |                                                                                                                                                                                                                                                                                                                                                                                     |
 
-1.  On the **Options** page, you can [specify
+4.  On the **Options** page, you can [specify
     tags](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-resource-tags.html)
     (key-value pairs) for resources in your stack and [set advanced
     options](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-add-tags.html).
@@ -254,7 +258,7 @@ account.
 
 Figure 8: Login page of wizard
 
-1.  On the **Get Started** screen, read the directions carefully to learn how to
+3.  On the **Get Started** screen, read the directions carefully to learn how to
     step through the path from initial data submission to transformations, to
     analytics, and finally to visualizations.
 
@@ -303,7 +307,7 @@ infrastructure, you can:
     bucket. You can also use Amazon Athena or Amazon Redshift as data sources in
     AWS QuickSight.
 
-![](media/352a63afabc36e51e6d758a95cccead6.emf)
+![](media/fig10-qs.png)
 
 Figure 10: Infrastructure deployed when launching Quick Start without
 demonstration
@@ -315,8 +319,8 @@ the CloudFormation page and deleting the root stack.
 
 ![](media/4d07d1897459616ec3837f68b5b5419e.png)
 
-Optional Exercise
------------------
+## Optional Exercise ##
+
 
 This optional exercise will allow you to build a schema-on-read analytical
 pipeline, similar to the one used with relational databases, using [Amazon
@@ -349,7 +353,7 @@ maintain the schema details and applies it at the time of querying the data.
 The dataset will be further filtered and transformed into a subset that is
 specifically used for reporting with Amazon QuickSight.
 
-Data staging in S3
+### Data staging in S3 ###
 
 The data ingestion into S3 is fairly straightforward. The BRFSS files can be
 ingested via the S3 command line interface (CLI), API, or the AWS Management
@@ -451,23 +455,21 @@ filter out unwanted data and fix the column headers:
 **Query 1:**
 
 ```SELECT ID, up_ci AS source, semean AS state, datasrc
-AS year, fips AS unit, fipname AS age,mean, current_date AS dt, current_time AS
-tm FROM brfsdata
+AS year, fips AS unit, fipname AS age,mean, current_date AS dt, current_time AS tm 
+FROM brfsdata
 WHERE ID != '' AND hrr IS NULL AND semean NOT LIKE '%29193%'
 ```
 **Query 2:**
 ```
 SELECT ID, up_ci AS source, semean AS state, datasrc
-AS year, fips AS unit, fipname AS age,mean, current_date AS dt, current_time AS
-tm
+AS year, fips AS unit, fipname AS age,mean, current_date AS dt, current_time AS tm
 FROM brfsdata WHERE ID != '' AND hrr IS NOT NULL AND up_ci LIKE '%BRFSS%'and
 semean NOT LIKE '"%' AND semean NOT LIKE '%29193%'
 ```
 **Query 3:**
 ```
 SELECT ID, low_ci AS source, age_adj AS state, fips
-AS year, fipname AS unit, hrr AS age,mean, current_date AS dt, current_time AS
-tm
+AS year, fipname AS unit, hrr AS age,mean, current_date AS dt, current_time AS tm
 FROM brfsdata WHERE ID != '' AND hrr IS NOT NULL AND up_ci NOT LIKE '%BRFSS%'
 AND age_adj NOT LIKE '"%' AND semean NOT LIKE '%29193%' AND low_ci LIKE 'BRFSS'
 ```
@@ -482,11 +484,11 @@ reporting table. This can be done by running an S3 CP command from the CLI or
 API, as shown below. Replace YourReportingBucket, YourReportingPrefix and
 Account ID with your corresponding values.
 
-aws s3 cp
+```aws s3 cp
 s3://aws-athena-query-results-YOUR_ACCOUNT_ID-us-east-1/Query1/2017/03/23/
 s3://\<YourReportingBucket/YourReportingPrefix\> --recursive --exclude "\*.\*"
 --include "\*.csv"
-
+```
 Note the prefix structure in which Athena stores query results. It creates a
 separate prefix for each day in which the query is executed, and stores the
 corresponding CSV and metadata file for each run. Copy the result set over to a
@@ -595,11 +597,9 @@ Dataset](#optional-using-your-own-dataset).
 **A.** Amazon ES is protected from public access. Make sure that your IP matches
 the input parameter **Remote Access CIDR**, which is white-listed for Amazon ES.
 
-Appendix
-========
+## Appendix ##
 
-Data Lake Foundation Background
--------------------------------
+### Data Lake Foundation Background ###
 
 The data lake foundation provides these features:
 
@@ -629,7 +629,7 @@ The data lake foundation provides these features:
     capabilities and optionally demonstrates key use cases for each type of
     actor in the usage model.
 
-    ![](media/9d5699761921295dd9b27360b424082f.emf)
+    ![](media/app-agile-analytics.png)
 
 Figure 1: Usage model for Data Lake Foundation Quick Start
 
@@ -637,7 +637,7 @@ Figure 2 illustrates the foundational solution components of the data lake and
 how they relate to the usage model. The solution components interact through
 recurring and repeatable data lake patterns using your data and business flow.
 
-![](media/dd05ba2a084dac461ec45544508973cf.emf)
+![](media/app-business-flow.png)
 
 **Figure 2: Capabilities and solution components in the Data Lake foundation
 Quick Start**
@@ -705,7 +705,7 @@ dataset, the wizard will guide you through this process flow and core data lake
 concepts using sample data, which is described in the [Quick Start
 Dataset](#quick-start-dataset) section.
 
-![](media/54765b240f28677d024ddbe0da939d59.emf)
+![](media/app-dl-process-flow.png)
 
 Figure 4: Data lake foundation process flow
 
@@ -763,7 +763,7 @@ The sample data set is from ECommCo, a fictional company that sells products in
 multiple categories through its ecommerce website, ECommCo.com. The following
 diagram summarizes the requirements of ECommCo’s business users.
 
-![](media/c01e0452da61e01b612c059c62cd95e0.emf)
+![](media/ecommco-high-level.png)
 
 Figure 5: ECommCo at a high level
 
@@ -773,7 +773,7 @@ data can then be used in descriptive, predictive, and real-time analytics to
 answer ECommCo’s most pressing business questions. The Quick Start data is
 summarized in Figure 6.
 
-![](media/571d6dd76ea4f255a7ada48c76b160ad.emf)
+![](media/qs-sample-data.png)
 
 Figure 6: Quick Start sample data
 
