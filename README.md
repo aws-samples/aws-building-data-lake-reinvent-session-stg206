@@ -32,7 +32,7 @@ Deployment Steps
     one](https://portal.aws.amazon.com/billing/signup?nc2=h_ct&redirect_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start)
     by following the on-screen instructions.
 
-2.  You will get a \$25 credit to cover the cost of this lab. You can apply that
+2.  Before the end of workshop, you will get a \$25 credit to cover the cost of this lab. You can apply that
     [here](https://console.aws.amazon.com/billing/home?#/credits). Remember to
     delete this lab at the end of this workshop, otherwise costs will accrue.
 
@@ -319,6 +319,8 @@ the CloudFormation page and deleting the root stack.
 
 ![](media/4d07d1897459616ec3837f68b5b5419e.png)
 
+ Before the end of workshop, you will get a \$25 credit to cover the cost of this lab. Don't forget to apply that
+    [here](https://console.aws.amazon.com/billing/home?#/credits).
 ## Optional Exercise ##
 
 
