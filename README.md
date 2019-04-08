@@ -6,7 +6,7 @@ Lab Manual
 re:Invent 2017
 ---
 
-© 2017 Amazon Web Services, Inc. and its affiliates. All rights reserved. This work may not be  reproduced or redistributed, in whole or in part, without prior written permission from Amazon Web Services, Inc. Commercial copying, lending, or selling is prohibited.
+This sample code is made available under the MIT-0 license. See the LICENSE file.
 
 ---
 Overview
